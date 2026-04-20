@@ -381,7 +381,7 @@ kbd{display:inline-block;padding:2px 7px;background:rgba(255,255,255,.03);border
         不，别紧张。这不是纪律审查。<br>
         Rainbow需要各种类型的人。不是每个位置都需要破门手，也不是每场行动都靠潜行。<br>
         我们要搞清楚的是——当枪声响起、计划崩塌、一切只能靠本能的时候，<strong style="color:#C41E3A">你会成为什么样的存在。</strong><br><br>
-        9个场景。没有标准答案。<br>
+        10个场景。没有标准答案。<br>
         6种作战人格。其中一个是你的镜像。
         <div class="six-signature">Six</div>
     </div>
@@ -579,9 +579,10 @@ const personalities = {
     }
 };
 
-// ========== QUESTIONS — 9个核心战术场景 ==========
+// ========== QUESTIONS — 10个核心战术场景 ==========
 const questions = [
-        {   "flavor": "【场景 01 · 选人】",
+        {
+                "flavor": "【场景 01 · 选人】",
                 "scenario": "选人阶段。<br>你的Pick优先级是——",
                 "text": "",
                 "options": [
@@ -598,13 +599,13 @@ const questions = [
                                 }
                         },
                         {
-                                "text": "Caveira/Vigil/Nokk — 让他们猜我在哪",
+                                "text": "Caveira/Vigil/Nøkk — 让他们猜我在哪",
                                 "scores": {
                                         "shad": 200
                                 }
                         },
                         {
-                                "text": "Thermite/Ying/Zofia — 团队需要什么我补什么",
+                                "text": "Thermite/Hibana/Zofia — 团队需要什么我补什么",
                                 "scores": {
                                         "comp": 200,
                                         "tact": 90
@@ -619,7 +620,8 @@ const questions = [
                         }
                 ]
         },
-        { "flavor": "【场景 02 · 开局抉择】",
+        {
+                "flavor": "【场景 02 · 开局抉择】",
                 "scenario": "进攻方。倒计时10秒。<br>你的开局思路是——",
                 "text": "",
                 "options": [
@@ -648,7 +650,7 @@ const questions = [
                                 }
                         },
                         {
-                                "text": "选个nokk，随机应变吧，看心情来",
+                                "text": "选个nøkk，随机应变吧，看心情来",
                                 "scores": {
                                         "chaos": 4,
                                         "shad": 20
@@ -809,8 +811,7 @@ const questions = [
                         {
                                 "text": "重点研究每个点位的陷阱架设位置和防守眼位",
                                 "scores": {
-                                        "trap": 50,
-                        
+                                        "trap": 50
                                 }
                         }
                 ]
@@ -853,6 +854,7 @@ const questions = [
                         }
                 ]
         },
+        {
                 "flavor": "【场景 08 · 成就感来源】",
                 "scenario": "一局游戏结束。<br>最让你满足的时刻是——",
                 "text": "",
@@ -884,7 +886,7 @@ const questions = [
                                 }
                         },
                         {
-                                "text": "美美躺平，靠运气一路上分",
+                                "text": "用Fuze咚穿天花板，人质和你一起上天",
                                 "scores": {
                                         "chaos": 200
                                 }
@@ -892,7 +894,7 @@ const questions = [
                 ]
         },
         {
-                "flavor": "【场景 9 · Fuze困境】",
+                "flavor": "【场景 09 · Fuze困境】",
                 "scenario": "你选了Fuze。面前有一面可爆破墙。<br>墙后面可能是敌人，也可能有人质。",
                 "text": "",
                 "options": [
@@ -936,6 +938,83 @@ const questions = [
 // ========== STATE ==========
 let currentQuestion = 0;
 let scores = { rush: 0, tact: 0, shad: 0, chaos: 0, comp: 0, trap: 0 };
+let currentResultType = null; // 存储当前结果类型
+
+// ========== URL参数处理 ==========
+function getUrlParam() {
+    // 从URL hash或search中获取结果参数
+    const hash = window.location.hash.substring(1); // 去掉#
+    const search = window.location.search.substring(1); // 去掉?
+    
+    // 尝试从hash解析: #RUSH-E 或 #result=RUSH-E
+    if (hash) {
+        if (hash.includes('=')) {
+            const params = new URLSearchParams(hash);
+            return params.get('result') || params.get('type') || hash;
+        }
+        return hash; // 直接是人格代码
+    }
+    
+    // 尝试从search解析: ?result=RUSH-E
+    if (search) {
+        const params = new URLSearchParams(search);
+        return params.get('result') || params.get('type');
+    }
+    
+    return null;
+}
+
+function setUrlParam(resultType) {
+    // 设置URL参数，不刷新页面
+    const url = new URL(window.location);
+    url.hash = `result=${resultType}`;
+    window.history.pushState(null, null, url.toString());
+}
+
+function findPersonalityByCode(code) {
+    // 根据人格代码查找人格数据
+    const codeMap = {
+        'RUSH-E': 'RUSH',
+        'TACT-I': 'TACT',
+        'SHAD-W': 'SHAD',
+        'CHAOS-S': 'CHAOS',
+        'COMP-X': 'COMP',
+        'TRAP-D': 'TRAP'
+    };
+    
+    const key = codeMap[code] || code;
+    return personalities[key] || null;
+}
+
+function generateShareUrl(resultType) {
+    // 生成分享链接
+    const baseUrl = window.location.origin + window.location.pathname;
+    return `${baseUrl}#result=${resultType}`;
+}
+
+// 页面加载时检查URL参数
+function checkUrlOnLoad() {
+    const resultType = getUrlParam();
+    if (resultType) {
+        const personality = findPersonalityByCode(resultType);
+        if (personality) {
+            // 模拟一个默认的维度数据用于展示
+            const dims = { rush: 0, tact: 0, shad: 0, chaos: 0, comp: 0, trap: 0 };
+            const dimKey = resultType.split('-')[0].toLowerCase();
+            if (dims.hasOwnProperty(dimKey)) {
+                dims[dimKey] = 85; // 默认匹配度
+            }
+            
+            // 直接显示结果
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('question-screen').style.display = 'none';
+            document.getElementById('result-screen').style.display = 'block';
+            showResult(personality, dims, 85);
+            return true;
+        }
+    }
+    return false;
+}
 
 // ========== FUNCTIONS ==========
 function startTest() {
@@ -1064,6 +1143,10 @@ function calculateResult() {
 }
 
 function showResult(personality, dims, matchPct) {
+    // 设置当前结果类型，用于分享链接
+    currentResultType = personality.code;
+    setUrlParam(personality.code);
+    
     const traitsHtml = Object.entries(personality.traits).map(([label, value]) =>
         `<div class="trait-item"><span class="trait-label">${label}</span>${value}</div>`
     ).join('');
@@ -1200,22 +1283,22 @@ function shareResult() {
     const code = document.querySelector('.result-type-code')?.textContent || '???';
     const rarity = document.querySelector('.rarity-badge')?.textContent?.trim() || '';
     const pct = document.querySelector('.match-percent')?.textContent || '';
-
-    // 使用固定部署链接，确保分享出去的链接正确
-    const shareUrl = 'https://arianing1999-commits.github.io/R6TI.GITHUB.IO/';
-
-    // 构建分享文本（包含链接）
-    const shareText = `【彩虹六号·R6TI作战人格评估】\n我的作战人格：${type} (${code})\n${rarity} | ${pct}\n\n来测测你是哪种作战人格！\n${shareUrl}`;
-
+    
+    // 构建分享文本
+    const shareText = `【彩虹六号·R6TI作战人格评估】\n我的作战人格：${type} (${code})\n${rarity} | ${pct}\n\n来测测你是哪种作战人格！`;
+    
+    // 生成分享链接
+    const shareUrl = generateShareUrl(code);
+    
     // 更新分享预览
-    document.getElementById('share-text-preview').textContent = shareText;
-
+    document.getElementById('share-text-preview').innerHTML = 
+        `${shareText.replace(/\n/g, '<br>')}<br><br><strong>分享链接：</strong><br><a href="${shareUrl}" style="color:#FF6B00;word-break:break-all;">${shareUrl}</a>`;
+    
     // 显示分享面板
     document.getElementById('share-overlay').classList.add('active');
-
-    // 保存分享文本到全局变量（包含链接）
+    
+    // 保存分享文本到全局变量
     window.currentShareText = shareText;
-    // 同时保存纯链接，供各渠道使用
     window.currentShareUrl = shareUrl;
 }
 
@@ -1235,29 +1318,30 @@ function shareToWechat() {
 
 function shareToWeibo() {
     const text = encodeURIComponent(window.currentShareText || '来测测你是哪种R6作战人格！');
-    const url = encodeURIComponent(window.currentShareUrl || 'https://arianing1999-commits.github.io/R6TI.GITHUB.IO/');
+    const url = encodeURIComponent(window.location.href);
     const weiboUrl = `https://service.weibo.com/share/share.php?title=${text}&url=${url}`;
     window.open(weiboUrl, '_blank', 'width=600,height=400');
 }
 
 function shareToQQ() {
     const text = encodeURIComponent(window.currentShareText || '来测测你是哪种R6作战人格！');
-    const url = encodeURIComponent(window.currentShareUrl || 'https://arianing1999-commits.github.io/R6TI.GITHUB.IO/');
+    const url = encodeURIComponent(window.location.href);
     const qqUrl = `https://connect.qq.com/widget/shareqq/index.html?title=${text}&url=${url}`;
     window.open(qqUrl, '_blank', 'width=600,height=500');
 }
 
 function copyShareLink() {
-    if (window.currentShareText) {
-        if (navigator.clipboard) {
-            navigator.clipboard.writeText(window.currentShareText)
-                .then(() => alert('✓ 分享文本已复制到剪贴板！'))
-                .catch(() => {
-                    prompt('请手动复制以下内容：', window.currentShareText);
-                });
-        } else {
-            prompt('请手动复制以下内容：', window.currentShareText);
-        }
+    // 复制分享文本和链接
+    const textToCopy = window.currentShareText + '\n\n分享链接：' + (window.currentShareUrl || window.location.href);
+    
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(textToCopy)
+            .then(() => alert('✓ 分享文本和链接已复制到剪贴板！'))
+            .catch(() => {
+                prompt('请手动复制以下内容：', textToCopy);
+            });
+    } else {
+        prompt('请手动复制以下内容：', textToCopy);
     }
 }
 
@@ -1415,6 +1499,18 @@ document.addEventListener('keydown', (e) => {
             selectOption(keyMap[e.key.toLowerCase()]);
         }
     }
+});
+
+// 页面加载时检查URL参数
+window.addEventListener('load', () => {
+    // 延迟一点执行，确保DOM完全加载
+    setTimeout(() => {
+        const hasUrlResult = checkUrlOnLoad();
+        if (!hasUrlResult) {
+            // 没有URL参数，显示开始界面
+            document.getElementById('start-screen').style.display = 'flex';
+        }
+    }, 100);
 });
 </script>
 
