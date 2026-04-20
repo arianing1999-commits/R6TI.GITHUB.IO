@@ -708,32 +708,32 @@ const questions = [
                         {
                                 "text": "Ash/Blitz/Buck — 能rush就能赢一半",
                                 "scores": {
-                                        "rush": 80
+                                        "rush": 200
                                 }
                         },
                         {
                                 "text": "Valkyrie/IQ/Pulse — 信息就是力量",
                                 "scores": {
-                                        "tact": 90
+                                        "tact": 200
                                 }
                         },
                         {
                                 "text": "Caveira/Vigil/Nokk — 让他们猜我在哪",
                                 "scores": {
-                                        "shad": 90
+                                        "shad": 200
                                 }
                         },
                         {
                                 "text": "Thermite/Ying/Zofia — 团队需要什么我补什么",
                                 "scores": {
-                                        "comp": 5,
+                                        "comp": 200,
                                         "tact": 90
                                 }
                         },
                         {
                                 "text": "Fuze/Kapkan/Lesion — 要么炸要么疼，快乐就完了",
                                 "scores": {
-                                        "chaos": 50,
+                                        "chaos": 90,
                                         "trap": 90
                                 }
                         }
@@ -904,33 +904,33 @@ const questions = [
                         {
                                 "text": "开局10秒内拿到首杀，全场MVP",
                                 "scores": {
-                                        "rush": 70
+                                        "rush": 200
                                 }
                         },
                         {
                                 "text": "一波完美的战术配合，全队零伤亡拿下",
                                 "scores": {
                                         "tact": 5,
-                                        "comp": 70
+                                        "comp": 200
                                 }
                         },
                         {
                                 "text": "夹子或edd陷阱瞬间带走两个人",
                                 "scores": {
-                                        "trap": 90
+                                        "trap": 200
                                 }
                         },
                         {
                                 "text": "关键时刻通过信息及垂直c4救场翻盘，队友刷屏'666'",
                                 "scores": {
                                         "comp": 5,
-                                        "tact": 90
+                                        "tact": 200
                                 }
                         },
                         {
                                 "text": "用Fuze咚穿天花板，人质和你一起上天",
                                 "scores": {
-                                        "chaos": 70
+                                        "chaos": 200
                                 }
                         }
                 ]
@@ -1084,10 +1084,10 @@ function calculateResult() {
     const rand = Math.random();
 
     if (rand < 0.7) {
-        // 70%: 从第1名中随机选择
+        // 80%: 从第1名中随机选择
         selectedDim = rank1[Math.floor(Math.random() * rank1.length)];
     } else {
-        // 30%: 从第2名或第3名中随机选择
+        // 20%: 从第2名或第3名中随机选择
         const rank2or3 = Math.random() < 0.5 ? rank2 : rank3;
         selectedDim = rank2or3[Math.floor(Math.random() * rank2or3.length)];
     }
