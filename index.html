@@ -381,7 +381,7 @@ kbd{display:inline-block;padding:2px 7px;background:rgba(255,255,255,.03);border
         不，别紧张。这不是纪律审查。<br>
         Rainbow需要各种类型的人。不是每个位置都需要破门手，也不是每场行动都靠潜行。<br>
         我们要搞清楚的是——当枪声响起、计划崩塌、一切只能靠本能的时候，<strong style="color:#C41E3A">你会成为什么样的存在。</strong><br><br>
-        10个场景。没有标准答案。<br>
+        9个场景。没有标准答案。<br>
         6种作战人格。其中一个是你的镜像。
         <div class="six-signature">Six</div>
     </div>
@@ -579,10 +579,47 @@ const personalities = {
     }
 };
 
-// ========== QUESTIONS — 10个核心战术场景 ==========
+// ========== QUESTIONS — 9个核心战术场景 ==========
 const questions = [
-        {
-                "flavor": "【场景 01 · 开局抉择】",
+        {   "flavor": "【场景 01 · 选人】",
+                "scenario": "选人阶段。<br>你的Pick优先级是——",
+                "text": "",
+                "options": [
+                        {
+                                "text": "Ash/Blitz/Buck — 能rush就能赢一半",
+                                "scores": {
+                                        "rush": 200
+                                }
+                        },
+                        {
+                                "text": "Valkyrie/IQ/Pulse — 信息就是力量",
+                                "scores": {
+                                        "tact": 200
+                                }
+                        },
+                        {
+                                "text": "Caveira/Vigil/Nokk — 让他们猜我在哪",
+                                "scores": {
+                                        "shad": 200
+                                }
+                        },
+                        {
+                                "text": "Thermite/Ying/Zofia — 团队需要什么我补什么",
+                                "scores": {
+                                        "comp": 200,
+                                        "tact": 90
+                                }
+                        },
+                        {
+                                "text": "Fuze/Kapkan/Lesion — 要么炸要么疼，快乐就完了",
+                                "scores": {
+                                        "chaos": 90,
+                                        "trap": 90
+                                }
+                        }
+                ]
+        },
+        { "flavor": "【场景 02 · 开局抉择】",
                 "scenario": "进攻方。倒计时10秒。<br>你的开局思路是——",
                 "text": "",
                 "options": [
@@ -620,7 +657,7 @@ const questions = [
                 ]
         },
         {
-                "flavor": "【场景 02 · 遭遇战】",
+                "flavor": "【场景 03 · 遭遇战】",
                 "scenario": "况且况且的火车声音传来，有闪盾在抓野<br>你的本能反应是——",
                 "text": "",
                 "options": [
@@ -660,7 +697,7 @@ const questions = [
                 ]
         },
         {
-                "flavor": "【场景 03 · 残局】",
+                "flavor": "【场景 04 · 残局】",
                 "scenario": "1v1残局。<br>对面还有最后一名防守者，位置未知。",
                 "text": "",
                 "options": [
@@ -696,45 +733,6 @@ const questions = [
                                 "text": "蹲在角落里当忍者，赌他找不到我",
                                 "scores": {
                                         "shad": 50
-                                }
-                        }
-                ]
-        },
-        {
-                "flavor": "【场景 04 · 选人】",
-                "scenario": "选人阶段。<br>你的Pick优先级是——",
-                "text": "",
-                "options": [
-                        {
-                                "text": "Ash/Blitz/Buck — 能rush就能赢一半",
-                                "scores": {
-                                        "rush": 200
-                                }
-                        },
-                        {
-                                "text": "Valkyrie/IQ/Pulse — 信息就是力量",
-                                "scores": {
-                                        "tact": 200
-                                }
-                        },
-                        {
-                                "text": "Caveira/Vigil/Nokk — 让他们猜我在哪",
-                                "scores": {
-                                        "shad": 200
-                                }
-                        },
-                        {
-                                "text": "Thermite/Ying/Zofia — 团队需要什么我补什么",
-                                "scores": {
-                                        "comp": 200,
-                                        "tact": 90
-                                }
-                        },
-                        {
-                                "text": "Fuze/Kapkan/Lesion — 要么炸要么疼，快乐就完了",
-                                "scores": {
-                                        "chaos": 90,
-                                        "trap": 90
                                 }
                         }
                 ]
@@ -855,49 +853,7 @@ const questions = [
                         }
                 ]
         },
-        {
-                "flavor": "【场景 08 · 安包残局】",
-                "scenario": "你是最后的进攻者。包已经安好。<br>时间还剩30秒。防守方还有2人存活。",
-                "text": "",
-                "options": [
-                        {
-                                "text": "拉出去找人！主动出击才是王道！",
-                                "scores": {
-                                        "rush": 20,
-                                        "chaos": 2
-                                }
-                        },
-                        {
-                                "text": "找个无敌点位架枪，守株待兔",
-                                "scores": {
-                                        "trap": 5,
-                                        "shad": 20
-                                }
-                        },
-                        {
-                                "text": "躲在不远处，听脚步声判断位置再出手",
-                                "scores": {
-                                        "tact": 5,
-                                        "shad": 2
-                                }
-                        },
-                        {
-                                "text": "跟队友沟通帮忙看摄像头以及报点",
-                                "scores": {
-                                        "comp": 50
-                                }
-                        },
-                        {
-                                "text": "在包旁边放个阔剑，然后自己出去浪一圈",
-                                "scores": {
-                                        "trap": 4,
-                                        "chaos": 40
-                                }
-                        }
-                ]
-        },
-        {
-                "flavor": "【场景 09 · 成就感来源】",
+                "flavor": "【场景 08 · 成就感来源】",
                 "scenario": "一局游戏结束。<br>最让你满足的时刻是——",
                 "text": "",
                 "options": [
@@ -928,7 +884,7 @@ const questions = [
                                 }
                         },
                         {
-                                "text": "用Fuze咚穿天花板，人质和你一起上天",
+                                "text": "美美躺平，靠运气一路上分",
                                 "scores": {
                                         "chaos": 200
                                 }
@@ -936,7 +892,7 @@ const questions = [
                 ]
         },
         {
-                "flavor": "【场景 10 · Fuze困境】",
+                "flavor": "【场景 9 · Fuze困境】",
                 "scenario": "你选了Fuze。面前有一面可爆破墙。<br>墙后面可能是敌人，也可能有人质。",
                 "text": "",
                 "options": [
