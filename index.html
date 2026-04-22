@@ -1517,25 +1517,22 @@ window.addEventListener('load', () => {
 <!-- 分享面板 -->
 <div class="share-overlay" id="share-overlay">
     <div class="share-panel">
-        <button class="share-close" onclick="closeSharePanel()">&times;</button>
-        <div class="share-title">&#9876; 分享作战人格 &#9876;</div>
+        <button class="share-close" onclick="closeSharePanel()">×</button>
+        <div class="share-title">☆ 分享作战人格 ☆</div>
         <div class="share-options">
-
-            <div class="share-option link" onclick="copyShareLink()">
-                <div class="share-option-icon">&#128279;</div>
-                <span>复制链接</span>
-            </div>
             <div class="share-option image" onclick="generateShareImage()">
-                <div class="share-option-icon">&#128247;</div>
+                <div class="share-option-icon">🖼</div>
                 <span>生成图片</span>
             </div>
-
-
-<!-- 分享图片容器（隐藏） -->
-<div class="share-image-container" id="share-image-container">
-    <div class="share-header">&#9876; 彩虹六号·R6TI作战人格评估 &#9876;</div>
-    <div class="share-result" id="share-result-content"></div>
+            <div class="share-option link" onclick="copyShareLink()">
+                <div class="share-option-icon">📋</div>
+                <span>复制链接</span>
+            </div>
+        </div>
+        <div class="share-preview" id="share-preview">
+            <strong>分享预览：</strong><br>
+            <span id="share-text-preview"></span>
+        </div>
+    </div>
 </div>
 
-</body>
-</html>
